@@ -1,0 +1,27 @@
+name: Continious Integration
+
+on:
+  pull_request:
+    branches:
+    - master
+    - support/*
+    paths-ignore:
+    - 'docs/**'
+    - 'README.md'
+    - '.editorconfig'
+    - '.gitattributes'
+    - '.gitignore'
+
+defaults: *default-defaults
+
+jobs:
+  build-and-test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    steps:
+    - *checkout
+    - *setup-dotnet5
+    - *restore
+    - *build
+    - name: Run
+      run: dotnet run --configuration Release --no-restore --no-build --project src/TestBug/TestBug.csproj
